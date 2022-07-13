@@ -35,8 +35,20 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 反向代理
+    proxy: {
+      '/abc': {
+        target: 'http://ihrm.itheima.net/',
+        changeOrigin: true,
+        pathRewrite: {
+          // 不写^的话api接口url中间万一有abc也会被替换成''
+          '^/abc': ''
+        }
+      }
     }
   },
+
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
@@ -47,7 +59,7 @@ module.exports = {
       }
     }
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
